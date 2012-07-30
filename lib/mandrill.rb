@@ -52,16 +52,16 @@ module Mandrill
         def cast_error(body)
 
             error_map = {
-    'ValidationError' => ValidationError,
-    'Invalid_Key' => InvalidKeyError,
-    'Unknown_Template' => UnknownTemplateError,
-    'Invalid_Tag_Name' => InvalidTagNameError,
-    'Invalid_Reject' => InvalidRejectError,
-    'Unknown_Sender' => UnknownSenderError,
-    'Unknown_Url' => UnknownUrlError,
-    'Invalid_Template' => InvalidTemplateError,
-    'Unknown_Webhook' => UnknownWebhookError
-}
+                'ValidationError' => ValidationError,
+                'Invalid_Key' => InvalidKeyError,
+                'Unknown_Template' => UnknownTemplateError,
+                'Invalid_Tag_Name' => InvalidTagNameError,
+                'Invalid_Reject' => InvalidRejectError,
+                'Unknown_Sender' => UnknownSenderError,
+                'Unknown_Url' => UnknownUrlError,
+                'Invalid_Template' => InvalidTemplateError,
+                'Unknown_Webhook' => UnknownWebhookError
+            }
 
             begin
                 error_info = JSON.parse(body)
