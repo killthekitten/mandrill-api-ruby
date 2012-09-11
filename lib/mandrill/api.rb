@@ -259,8 +259,9 @@ module Mandrill
             @master = master
         end
 
-        # Retrieves your email rejection blacklist. You can provide an email address to limit the results. Returns up to 1000 results.
+        # Retrieves your email rejection blacklist. You can provide an email address to limit the results. Returns up to 1000 results. By default, entries that have expired are excluded from the results; set include_expired to true to include them.
         # @param [String] email an optional email address to search by
+        # @param [Boolean] include_expired whether to include rejections that have already expired.
         # @return [Array] Up to 1000 rejection entries
         #     - [Hash] return[] the information for each rejection blacklist entry
         #         - [String] email the email that is blocked
@@ -269,8 +270,8 @@ module Mandrill
         #         - [String] expires_at when the blacklist entry will expire (this may be in the past)
         #         - [Boolean] expired whether the blacklist entry has expired
         #         - [Hash] Sender sender the sender that this blacklist entry applies to, or null if none.
-        def list(email=nil)
-            _params = {:email => email}
+        def list(email=nil, include_expired=false)
+            _params = {:email => email, :include_expired => include_expired}
             return @master.call 'rejects/list', _params
         end
 
