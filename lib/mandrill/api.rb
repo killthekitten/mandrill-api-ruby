@@ -472,12 +472,13 @@ module Mandrill
         #             - [String] type the MIME type of the attachment - allowed types are text/*, image/*, and application/pdf
         #             - [String] name the file name of the attachment
         #             - [String] content the content of the attachment as a base64-encoded string
+        # @param [Boolean] async enable a background sending mode that is optimized for bulk sending. In async mode, messages/send will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a webhook for the 'reject' event. Defaults to false for messages with fewer than 100 recipients; messages with more than 100 recipients are always sent asynchronously, regardless of the value of async.
         # @return [Array] of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
         #     - [Hash] return[] the sending results for a single recipient
         #         - [String] email the email address of the recipient
         #         - [String] status the sending status of the recipient - either "sent", "queued", "rejected", or "invalid"
-        def send(message)
-            _params = {:message => message}
+        def send(message, async=false)
+            _params = {:message => message, :async => async}
             return @master.call 'messages/send', _params
         end
 
@@ -528,12 +529,13 @@ module Mandrill
         #             - [String] type the MIME type of the attachment - allowed types are text/*, image/*, and application/pdf
         #             - [String] name the file name of the attachment
         #             - [String] content the content of the attachment as a base64-encoded string
+        # @param [Boolean] async enable a background sending mode that is optimized for bulk sending. In async mode, messages/sendTemplate will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a webhook for the 'reject' event. Defaults to false for messages with fewer than 100 recipients; messages with more than 100 recipients are always sent asynchronously, regardless of the value of async.
         # @return [Array] of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
         #     - [Hash] return[] the sending results for a single recipient
         #         - [String] email the email address of the recipient
         #         - [String] status the sending status of the recipient - either "sent", "queued", "rejected", or "invalid"
-        def send_template(template_name, template_content, message)
-            _params = {:template_name => template_name, :template_content => template_content, :message => message}
+        def send_template(template_name, template_content, message, async=false)
+            _params = {:template_name => template_name, :template_content => template_content, :message => message, :async => async}
             return @master.call 'messages/send-template', _params
         end
 
@@ -590,12 +592,13 @@ module Mandrill
         # @param [String, nil] from_name optionally define the sender alias
         # @param [Array, nil] to optionally define the recipients to receive the message - otherwise we'll use the To, Cc, and Bcc headers provided in the document
         #     - [String] to[] the email address of the recipint
+        # @param [Boolean] async enable a background sending mode that is optimized for bulk sending. In async mode, messages/sendRaw will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a webhook for the 'reject' event. Defaults to false for messages with fewer than 100 recipients; messages with more than 100 recipients are always sent asynchronously, regardless of the value of async.
         # @return [Array] of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
         #     - [Hash] return[] the sending results for a single recipient
         #         - [String] email the email address of the recipient
         #         - [String] status the sending status of the recipient - either "sent", "queued", "rejected", or "invalid"
-        def send_raw(raw_message, from_email=nil, from_name=nil, to=nil)
-            _params = {:raw_message => raw_message, :from_email => from_email, :from_name => from_name, :to => to}
+        def send_raw(raw_message, from_email=nil, from_name=nil, to=nil, async=false)
+            _params = {:raw_message => raw_message, :from_email => from_email, :from_name => from_name, :to => to, :async => async}
             return @master.call 'messages/send-raw', _params
         end
 
