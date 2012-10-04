@@ -549,6 +549,7 @@ module Mandrill
         # @return [Array] of structs for each matching message
         #     - [Hash] return[] the information for a single matching message
         #         - [Integer] ts the Unix timestamp from when this message was sent
+        #         - [String] _id the message's unique id
         #         - [String] sender the email address of the sender
         #         - [String] subject the message's subject link
         #         - [String] email the recipient email address
@@ -557,6 +558,7 @@ module Mandrill
         #         - [Integer] opens how many times has this message been opened
         #         - [Integer] clicks how many times has a link been clicked in this message
         #         - [String] state sending status of this message: sent, bounced, rejected
+        #         - [Hash] metadata any custom metadata provided when the message was sent
         def search(query='*', date_from=nil, date_to=nil, tags=nil, senders=nil, limit=100)
             _params = {:query => query, :date_from => date_from, :date_to => date_to, :tags => tags, :senders => senders, :limit => limit}
             return @master.call 'messages/search', _params
