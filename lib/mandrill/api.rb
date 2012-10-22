@@ -618,7 +618,7 @@ module Mandrill
         #         - [String] url the URL to be tracked
         #         - [Integer] sent the number of emails that contained the URL
         #         - [Integer] clicks the number of times the URL has been clicked from a tracked email
-        #         - [Integer] unique_clicks the number of unique emails that have benerated clicks for this URL
+        #         - [Integer] unique_clicks the number of unique emails that have generated clicks for this URL
         def list()
             _params = {}
             return @master.call 'urls/list', _params
@@ -631,7 +631,7 @@ module Mandrill
         #         - [String] url the URL to be tracked
         #         - [Integer] sent the number of emails that contained the URL
         #         - [Integer] clicks the number of times the URL has been clicked from a tracked email
-        #         - [Integer] unique_clicks the number of unique emails that have benerated clicks for this URL
+        #         - [Integer] unique_clicks the number of unique emails that have generated clicks for this URL
         def search(q)
             _params = {:q => q}
             return @master.call 'urls/search', _params
