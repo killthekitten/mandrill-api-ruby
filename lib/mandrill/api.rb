@@ -310,6 +310,23 @@ module Mandrill
             return @master.call 'tags/list', _params
         end
 
+        # Deletes a tag permanently. Deleting a tag removes the tag from any messages that have been sent, and also deletes the tag's stats. There is no way to undo this operation, so use it carefully.
+        # @param [String] tag a tag name
+        # @return [Hash] the tag that was deleted
+        #     - [String] tag the actual tag as a string
+        #     - [Integer] sent the total number of messages sent with this tag
+        #     - [Integer] hard_bounces the total number of hard bounces by messages with this tag
+        #     - [Integer] soft_bounces the total number of soft bounces by messages with this tag
+        #     - [Integer] rejects the total number of rejected messages with this tag
+        #     - [Integer] complaints the total number of spam complaints received for messages with this tag
+        #     - [Integer] unsubs the total number of unsubscribe requests received for messages with this tag
+        #     - [Integer] opens the total number of times messages with this tag have been opened
+        #     - [Integer] clicks the total number of times tracked URLs in messages with this tag have been clicked
+        def delete(tag)
+            _params = {:tag => tag}
+            return @master.call 'tags/delete', _params
+        end
+
         # Return more detailed information about a single tag, including aggregates of recent stats
         # @param [String] tag an existing tag name
         # @return [Hash] the detailed information on the tag
