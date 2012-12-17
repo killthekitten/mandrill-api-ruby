@@ -19,5 +19,7 @@ module Mandrill
     end
     class UnknownWebhookError < Error
     end
+    class UnknownInboundDomainError < Error
+    end
 end
 

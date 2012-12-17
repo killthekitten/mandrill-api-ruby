@@ -13,9 +13,10 @@ module Mandrill
         # @param [String] code the HTML code for the template with mc:edit attributes for the editable elements
         # @param [Boolean] publish set to false to add a draft template without publishing
         # @return [Hash] the information saved about the new template
-        #     - [String] name the name of the template - draft version
+        #     - [String] slug the immutable unique code name of the template
+        #     - [String] name the name of the template
         #     - [String] code the full HTML code of the template, with mc:edit attributes marking the editable elements - draft version
-        #     - [String] publish_name the name that the template was published as, if it has been published
+        #     - [String] publish_name the same as the template name - kept as a separate field for backwards compatibility
         #     - [String] publish_code the full HTML code of the template, with mc:edit attributes marking the editable elements that are available as published, if it has been published
         #     - [String] published_at the date and time the template was last published as a UTC string in YYYY-MM-DD HH:MM:SS format, or null if it has not been published
         #     - [String] created_at the date and time the template was first created as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -26,11 +27,12 @@ module Mandrill
         end
 
         # Get the information for an existing template
-        # @param [String] name the name of an existing template
+        # @param [String] name the immutable name of an existing template
         # @return [Hash] the requested template information
-        #     - [String] name the name of the template - draft version
+        #     - [String] slug the immutable unique code name of the template
+        #     - [String] name the name of the template
         #     - [String] code the full HTML code of the template, with mc:edit attributes marking the editable elements - draft version
-        #     - [String] publish_name the name that the template was published as, if it has been published
+        #     - [String] publish_name the same as the template name - kept as a separate field for backwards compatibility
         #     - [String] publish_code the full HTML code of the template, with mc:edit attributes marking the editable elements that are available as published, if it has been published
         #     - [String] published_at the date and time the template was last published as a UTC string in YYYY-MM-DD HH:MM:SS format, or null if it has not been published
         #     - [String] created_at the date and time the template was first created as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -41,13 +43,14 @@ module Mandrill
         end
 
         # Update the code for an existing template
-        # @param [String] name the name of an existing template
+        # @param [String] name the immutable name of an existing template
         # @param [String] code the new code for the template
         # @param [Boolean] publish set to false to update the draft version of the template without publishing
         # @return [Hash] the template that was updated
-        #     - [String] name the name of the template - draft version
+        #     - [String] slug the immutable unique code name of the template
+        #     - [String] name the name of the template
         #     - [String] code the full HTML code of the template, with mc:edit attributes marking the editable elements - draft version
-        #     - [String] publish_name the name that the template was published as, if it has been published
+        #     - [String] publish_name the same as the template name - kept as a separate field for backwards compatibility
         #     - [String] publish_code the full HTML code of the template, with mc:edit attributes marking the editable elements that are available as published, if it has been published
         #     - [String] published_at the date and time the template was last published as a UTC string in YYYY-MM-DD HH:MM:SS format, or null if it has not been published
         #     - [String] created_at the date and time the template was first created as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -58,11 +61,12 @@ module Mandrill
         end
 
         # Publish the content for the template. Any new messages sent using this template will start using the content that was previously in draft.
-        # @param [String] name the name of an existing template
+        # @param [String] name the immutable name of an existing template
         # @return [Hash] the template that was published
-        #     - [String] name the name of the template - draft version
+        #     - [String] slug the immutable unique code name of the template
+        #     - [String] name the name of the template
         #     - [String] code the full HTML code of the template, with mc:edit attributes marking the editable elements - draft version
-        #     - [String] publish_name the name that the template was published as, if it has been published
+        #     - [String] publish_name the same as the template name - kept as a separate field for backwards compatibility
         #     - [String] publish_code the full HTML code of the template, with mc:edit attributes marking the editable elements that are available as published, if it has been published
         #     - [String] published_at the date and time the template was last published as a UTC string in YYYY-MM-DD HH:MM:SS format, or null if it has not been published
         #     - [String] created_at the date and time the template was first created as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -73,11 +77,12 @@ module Mandrill
         end
 
         # Delete a template
-        # @param [String] name the name of an existing template
+        # @param [String] name the immutable name of an existing template
         # @return [Hash] the template that was deleted
-        #     - [String] name the name of the template - draft version
+        #     - [String] slug the immutable unique code name of the template
+        #     - [String] name the name of the template
         #     - [String] code the full HTML code of the template, with mc:edit attributes marking the editable elements - draft version
-        #     - [String] publish_name the name that the template was published as, if it has been published
+        #     - [String] publish_name the same as the template name - kept as a separate field for backwards compatibility
         #     - [String] publish_code the full HTML code of the template, with mc:edit attributes marking the editable elements that are available as published, if it has been published
         #     - [String] published_at the date and time the template was last published as a UTC string in YYYY-MM-DD HH:MM:SS format, or null if it has not been published
         #     - [String] created_at the date and time the template was first created as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -90,9 +95,10 @@ module Mandrill
         # Return a list of all the templates available to this user
         # @return [Array] an array of structs with information about each template
         #     - [Hash] return[] the information on each template in the account
-        #         - [String] name the name of the template - draft version
+        #         - [String] slug the immutable unique code name of the template
+        #         - [String] name the name of the template
         #         - [String] code the full HTML code of the template, with mc:edit attributes marking the editable elements - draft version
-        #         - [String] publish_name the name that the template was published as, if it has been published
+        #         - [String] publish_name the same as the template name - kept as a separate field for backwards compatibility
         #         - [String] publish_code the full HTML code of the template, with mc:edit attributes marking the editable elements that are available as published, if it has been published
         #         - [String] published_at the date and time the template was last published as a UTC string in YYYY-MM-DD HH:MM:SS format, or null if it has not been published
         #         - [String] created_at the date and time the template was first created as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -122,7 +128,7 @@ module Mandrill
         end
 
         # Inject content and optionally merge fields into a template, returning the HTML that results
-        # @param [String] template_name the name of a template that exists in the user's account
+        # @param [String] template_name the immutable name of a template that exists in the user's account
         # @param [Array] template_content an array of template content to render.  Each item in the array should be a struct with two keys - name: the name of the content block to set the content for, and content: the actual content to put into the block
         #     - [Hash] template_content[] the injection of a single piece of content into a single editable region
         #         - [String] name the name of the mc:edit editable region to inject into
@@ -283,6 +289,46 @@ module Mandrill
         def delete(email)
             _params = {:email => email}
             return @master.call 'rejects/delete', _params
+        end
+
+    end
+    class Inbound
+        attr_accessor :master
+
+        def initialize(master)
+            @master = master
+        end
+
+        # List the domains that have been configured for inbound delivery
+        # @return [Array] the inbound domains associated with the account
+        #     - [Array] return[] the individual domain info
+        def domains()
+            _params = {}
+            return @master.call 'inbound/domains', _params
+        end
+
+        # List the mailbox routes defined for an inbound domain
+        # @param [String] domain the domain to check
+        # @return [Array] the routes associated with the domain
+        #     - [Hash] return[] the individual mailbox route
+        #         - [String] pattern the search pattern that the mailbox name should match
+        #         - [String] url the webhook URL where inbound messages will be published
+        def routes(domain)
+            _params = {:domain => domain}
+            return @master.call 'inbound/routes', _params
+        end
+
+        # Take a raw MIME document destined for a domain with inbound domains set up, and send it to the inbound hook exactly as if it had been sent over SMTP $sparam string $to[] the email address of the recipient @validate trim
+        # @param [String] raw_message the full MIME document of an email message
+        # @param [Array, nil] to optionally define the recipients to receive the message - otherwise we'll use the To, Cc, and Bcc headers provided in the document
+        # @return [Array] an array of the information for each recipient in the message (usually one) that matched an inbound route
+        #     - [Hash] return[] the individual recipient information
+        #         - [Hash] email the email address of the matching recipient
+        #         - [Hash] pattern the mailbox route pattern that the recipient matched
+        #         - [Hash] url the webhook URL that the message was posted to
+        def send_raw(raw_message, to=nil)
+            _params = {:raw_message => raw_message, :to => to}
+            return @master.call 'inbound/send-raw', _params
         end
 
     end
@@ -619,6 +665,14 @@ module Mandrill
         def send_raw(raw_message, from_email=nil, from_name=nil, to=nil, async=false)
             _params = {:raw_message => raw_message, :from_email => from_email, :from_name => from_name, :to => to, :async => async}
             return @master.call 'messages/send-raw', _params
+        end
+
+    end
+    class Internal
+        attr_accessor :master
+
+        def initialize(master)
+            @master = master
         end
 
     end

@@ -60,7 +60,8 @@ module Mandrill
                 'Unknown_Sender' => UnknownSenderError,
                 'Unknown_Url' => UnknownUrlError,
                 'Invalid_Template' => InvalidTemplateError,
-                'Unknown_Webhook' => UnknownWebhookError
+                'Unknown_Webhook' => UnknownWebhookError,
+                'Unknown_InboundDomain' => UnknownInboundDomainError
             }
 
             begin
@@ -87,11 +88,17 @@ module Mandrill
         def rejects()
             Rejects.new self
         end
+        def inbound()
+            Inbound.new self
+        end
         def tags()
             Tags.new self
         end
         def messages()
             Messages.new self
+        end
+        def internal()
+            Internal.new self
         end
         def urls()
             Urls.new self
