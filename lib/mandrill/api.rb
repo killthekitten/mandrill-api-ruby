@@ -301,7 +301,10 @@ module Mandrill
 
         # List the domains that have been configured for inbound delivery
         # @return [Array] the inbound domains associated with the account
-        #     - [Array] return[] the individual domain info
+        #     - [Hash] return[] the individual domain info
+        #         - [String] domain the domain name that is accepting mail
+        #         - [String] created_at the date and time that the inbound domain was added as a UTC string in YYYY-MM-DD HH:MM:SS format
+        #         - [Boolean] valid_mx true if this inbound domain has successfully set up an MX record to deliver mail to the Mandrill servers
         def domains()
             _params = {}
             return @master.call 'inbound/domains', _params
@@ -323,9 +326,9 @@ module Mandrill
         # @param [Array, nil] to optionally define the recipients to receive the message - otherwise we'll use the To, Cc, and Bcc headers provided in the document
         # @return [Array] an array of the information for each recipient in the message (usually one) that matched an inbound route
         #     - [Hash] return[] the individual recipient information
-        #         - [Hash] email the email address of the matching recipient
-        #         - [Hash] pattern the mailbox route pattern that the recipient matched
-        #         - [Hash] url the webhook URL that the message was posted to
+        #         - [String] email the email address of the matching recipient
+        #         - [String] pattern the mailbox route pattern that the recipient matched
+        #         - [String] url the webhook URL that the message was posted to
         def send_raw(raw_message, to=nil)
             _params = {:raw_message => raw_message, :to => to}
             return @master.call 'inbound/send-raw', _params
