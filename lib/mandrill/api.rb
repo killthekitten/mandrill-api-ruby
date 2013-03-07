@@ -551,6 +551,7 @@ module Mandrill
         #     - [Hash] return[] the sending results for a single recipient
         #         - [String] email the email address of the recipient
         #         - [String] status the sending status of the recipient - either "sent", "queued", "rejected", or "invalid"
+        #         - [String] _id the message's unique id
         def send(message, async=false)
             _params = {:message => message, :async => async}
             return @master.call 'messages/send', _params
@@ -614,6 +615,7 @@ module Mandrill
         #     - [Hash] return[] the sending results for a single recipient
         #         - [String] email the email address of the recipient
         #         - [String] status the sending status of the recipient - either "sent", "queued", "rejected", or "invalid"
+        #         - [String] _id the message's unique id
         def send_template(template_name, template_content, message, async=false)
             _params = {:template_name => template_name, :template_content => template_content, :message => message, :async => async}
             return @master.call 'messages/send-template', _params
@@ -684,6 +686,7 @@ module Mandrill
         #     - [Hash] return[] the sending results for a single recipient
         #         - [String] email the email address of the recipient
         #         - [String] status the sending status of the recipient - either "sent", "queued", "rejected", or "invalid"
+        #         - [String] _id the message's unique id
         def send_raw(raw_message, from_email=nil, from_name=nil, to=nil, async=false)
             _params = {:raw_message => raw_message, :from_email => from_email, :from_name => from_name, :to => to, :async => async}
             return @master.call 'messages/send-raw', _params
