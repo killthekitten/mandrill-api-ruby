@@ -515,6 +515,8 @@ module Mandrill
         #     - [Boolean] url_strip_qs whether or not to strip the query string from URLs when aggregating tracked URL data
         #     - [Boolean] preserve_recipients whether or not to expose all recipients in to "To" header for each email
         #     - [String] bcc_address an optional address to receive an exact copy of each recipient's email
+        #     - [String] tracking_domain a custom domain to use for tracking opens and clicks instead of mandrillapp.com
+        #     - [String] signing_domain a custom domain to use for SPF/DKIM signing instead of mandrill (for "via" or "on behalf of" in email clients)
         #     - [Boolean] merge whether to evaluate merge tags in the message. Will automatically be set to true if either merge_vars or global_merge_vars are provided.
         #     - [Array] global_merge_vars global merge variables to use for all recipients. You can override these per recipient.
         #         - [Hash] global_merge_vars[] a single global merge variable
@@ -580,6 +582,8 @@ module Mandrill
         #     - [Boolean] url_strip_qs whether or not to strip the query string from URLs when aggregating tracked URL data
         #     - [Boolean] preserve_recipients whether or not to expose all recipients in to "To" header for each email
         #     - [String] bcc_address an optional address to receive an exact copy of each recipient's email
+        #     - [String] tracking_domain a custom domain to use for tracking opens and clicks instead of mandrillapp.com
+        #     - [String] signing_domain a custom domain to use for SPF/DKIM signing instead of mandrill (for "via" or "on behalf of" in email clients)
         #     - [Array] global_merge_vars global merge variables to use for all recipients. You can override these per recipient.
         #         - [Hash] global_merge_vars[] a single global merge variable
         #             - [String] name the global merge variable's name. Merge variable names are case-insensitive and may not start with _
