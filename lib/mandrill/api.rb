@@ -511,6 +511,7 @@ module Mandrill
         #     - [Boolean] track_opens whether or not to turn on open tracking for the message
         #     - [Boolean] track_clicks whether or not to turn on click tracking for the message
         #     - [Boolean] auto_text whether or not to automatically generate a text part for messages that are not given text
+        #     - [Boolean] auto_html whether or not to automatically generate an HTML part for messages that are not given HTML
         #     - [Boolean] inline_css whether or not to automatically inline all CSS styles provided in the message HTML - only for HTML documents less than 256KB in size
         #     - [Boolean] url_strip_qs whether or not to strip the query string from URLs when aggregating tracked URL data
         #     - [Boolean] preserve_recipients whether or not to expose all recipients in to "To" header for each email
@@ -578,6 +579,7 @@ module Mandrill
         #     - [Boolean] track_opens whether or not to turn on open tracking for the message
         #     - [Boolean] track_clicks whether or not to turn on click tracking for the message
         #     - [Boolean] auto_text whether or not to automatically generate a text part for messages that are not given text
+        #     - [Boolean] auto_html whether or not to automatically generate an HTML part for messages that are not given HTML
         #     - [Boolean] inline_css whether or not to automatically inline all CSS styles provided in the message HTML - only for HTML documents less than 256KB in size
         #     - [Boolean] url_strip_qs whether or not to strip the query string from URLs when aggregating tracked URL data
         #     - [Boolean] preserve_recipients whether or not to expose all recipients in to "To" header for each email
