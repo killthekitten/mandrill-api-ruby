@@ -321,7 +321,7 @@ module Mandrill
             return @master.call 'inbound/routes', _params
         end
 
-        # Take a raw MIME document destined for a domain with inbound domains set up, and send it to the inbound hook exactly as if it had been sent over SMTP $sparam string $to[] the email address of the recipient @validate trim
+        # Take a raw MIME document destined for a domain with inbound domains set up, and send it to the inbound hook exactly as if it had been sent over SMTP $sparam string $to[] the email address of the recipient @validate trim $sparam string $mail_from the address specified in the MAIL FROM stage of the SMTP conversation @validate email. Optional; required for the SPF check. $sparam string $helo the identification provided by the client mta in the MTA state of the SMTP conversation. Optional; required for the SPF check. $sparam string $client_address the remote MTA's ip address. Optional; required for the SPF check.
         # @param [String] raw_message the full MIME document of an email message
         # @param [Array, nil] to optionally define the recipients to receive the message - otherwise we'll use the To, Cc, and Bcc headers provided in the document
         # @return [Array] an array of the information for each recipient in the message (usually one) that matched an inbound route
