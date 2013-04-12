@@ -10,19 +10,31 @@ module Mandrill
 
         # Add a new template
         # @param [String] name the name for the new template - must be unique
+        # @param [String] from_email a default sending address for emails sent using this template
+        # @param [String] from_name a default from name to be used
+        # @param [String] subject a default subject line to be used
         # @param [String] code the HTML code for the template with mc:edit attributes for the editable elements
+        # @param [String] text a default text part to be used when sending with this template
         # @param [Boolean] publish set to false to add a draft template without publishing
         # @return [Hash] the information saved about the new template
         #     - [String] slug the immutable unique code name of the template
         #     - [String] name the name of the template
         #     - [String] code the full HTML code of the template, with mc:edit attributes marking the editable elements - draft version
+        #     - [String] subject the subject line of the template, if provided - draft version
+        #     - [String] from_email the default sender address for the template, if provided - draft version
+        #     - [String] from_name the default sender from name for the template, if provided - draft version
+        #     - [String] text the default text part of messages sent with the template, if provided - draft version
         #     - [String] publish_name the same as the template name - kept as a separate field for backwards compatibility
         #     - [String] publish_code the full HTML code of the template, with mc:edit attributes marking the editable elements that are available as published, if it has been published
+        #     - [String] publish_subject the subject line of the template, if provided
+        #     - [String] publish_from_email the default sender address for the template, if provided
+        #     - [String] publish_from_name the default sender from name for the template, if provided
+        #     - [String] publish_text the default text part of messages sent with the template, if provided
         #     - [String] published_at the date and time the template was last published as a UTC string in YYYY-MM-DD HH:MM:SS format, or null if it has not been published
         #     - [String] created_at the date and time the template was first created as a UTC string in YYYY-MM-DD HH:MM:SS format
         #     - [String] updated_at the date and time the template was last modified as a UTC string in YYYY-MM-DD HH:MM:SS format
-        def add(name, code, publish=true)
-            _params = {:name => name, :code => code, :publish => publish}
+        def add(name, from_email=nil, from_name=nil, subject=nil, code=nil, text=nil, publish=true)
+            _params = {:name => name, :from_email => from_email, :from_name => from_name, :subject => subject, :code => code, :text => text, :publish => publish}
             return @master.call 'templates/add', _params
         end
 
@@ -32,8 +44,16 @@ module Mandrill
         #     - [String] slug the immutable unique code name of the template
         #     - [String] name the name of the template
         #     - [String] code the full HTML code of the template, with mc:edit attributes marking the editable elements - draft version
+        #     - [String] subject the subject line of the template, if provided - draft version
+        #     - [String] from_email the default sender address for the template, if provided - draft version
+        #     - [String] from_name the default sender from name for the template, if provided - draft version
+        #     - [String] text the default text part of messages sent with the template, if provided - draft version
         #     - [String] publish_name the same as the template name - kept as a separate field for backwards compatibility
         #     - [String] publish_code the full HTML code of the template, with mc:edit attributes marking the editable elements that are available as published, if it has been published
+        #     - [String] publish_subject the subject line of the template, if provided
+        #     - [String] publish_from_email the default sender address for the template, if provided
+        #     - [String] publish_from_name the default sender from name for the template, if provided
+        #     - [String] publish_text the default text part of messages sent with the template, if provided
         #     - [String] published_at the date and time the template was last published as a UTC string in YYYY-MM-DD HH:MM:SS format, or null if it has not been published
         #     - [String] created_at the date and time the template was first created as a UTC string in YYYY-MM-DD HH:MM:SS format
         #     - [String] updated_at the date and time the template was last modified as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -44,19 +64,31 @@ module Mandrill
 
         # Update the code for an existing template
         # @param [String] name the immutable name of an existing template
+        # @param [String] from_email the new default sending address
+        # @param [String] from_name the new default from name
+        # @param [String] subject the new default subject line
         # @param [String] code the new code for the template
+        # @param [String] text the new default text part to be used
         # @param [Boolean] publish set to false to update the draft version of the template without publishing
         # @return [Hash] the template that was updated
         #     - [String] slug the immutable unique code name of the template
         #     - [String] name the name of the template
         #     - [String] code the full HTML code of the template, with mc:edit attributes marking the editable elements - draft version
+        #     - [String] subject the subject line of the template, if provided - draft version
+        #     - [String] from_email the default sender address for the template, if provided - draft version
+        #     - [String] from_name the default sender from name for the template, if provided - draft version
+        #     - [String] text the default text part of messages sent with the template, if provided - draft version
         #     - [String] publish_name the same as the template name - kept as a separate field for backwards compatibility
         #     - [String] publish_code the full HTML code of the template, with mc:edit attributes marking the editable elements that are available as published, if it has been published
+        #     - [String] publish_subject the subject line of the template, if provided
+        #     - [String] publish_from_email the default sender address for the template, if provided
+        #     - [String] publish_from_name the default sender from name for the template, if provided
+        #     - [String] publish_text the default text part of messages sent with the template, if provided
         #     - [String] published_at the date and time the template was last published as a UTC string in YYYY-MM-DD HH:MM:SS format, or null if it has not been published
         #     - [String] created_at the date and time the template was first created as a UTC string in YYYY-MM-DD HH:MM:SS format
         #     - [String] updated_at the date and time the template was last modified as a UTC string in YYYY-MM-DD HH:MM:SS format
-        def update(name, code, publish=true)
-            _params = {:name => name, :code => code, :publish => publish}
+        def update(name, from_email=nil, from_name=nil, subject=nil, code=nil, text=nil, publish=true)
+            _params = {:name => name, :from_email => from_email, :from_name => from_name, :subject => subject, :code => code, :text => text, :publish => publish}
             return @master.call 'templates/update', _params
         end
 
@@ -66,8 +98,16 @@ module Mandrill
         #     - [String] slug the immutable unique code name of the template
         #     - [String] name the name of the template
         #     - [String] code the full HTML code of the template, with mc:edit attributes marking the editable elements - draft version
+        #     - [String] subject the subject line of the template, if provided - draft version
+        #     - [String] from_email the default sender address for the template, if provided - draft version
+        #     - [String] from_name the default sender from name for the template, if provided - draft version
+        #     - [String] text the default text part of messages sent with the template, if provided - draft version
         #     - [String] publish_name the same as the template name - kept as a separate field for backwards compatibility
         #     - [String] publish_code the full HTML code of the template, with mc:edit attributes marking the editable elements that are available as published, if it has been published
+        #     - [String] publish_subject the subject line of the template, if provided
+        #     - [String] publish_from_email the default sender address for the template, if provided
+        #     - [String] publish_from_name the default sender from name for the template, if provided
+        #     - [String] publish_text the default text part of messages sent with the template, if provided
         #     - [String] published_at the date and time the template was last published as a UTC string in YYYY-MM-DD HH:MM:SS format, or null if it has not been published
         #     - [String] created_at the date and time the template was first created as a UTC string in YYYY-MM-DD HH:MM:SS format
         #     - [String] updated_at the date and time the template was last modified as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -82,8 +122,16 @@ module Mandrill
         #     - [String] slug the immutable unique code name of the template
         #     - [String] name the name of the template
         #     - [String] code the full HTML code of the template, with mc:edit attributes marking the editable elements - draft version
+        #     - [String] subject the subject line of the template, if provided - draft version
+        #     - [String] from_email the default sender address for the template, if provided - draft version
+        #     - [String] from_name the default sender from name for the template, if provided - draft version
+        #     - [String] text the default text part of messages sent with the template, if provided - draft version
         #     - [String] publish_name the same as the template name - kept as a separate field for backwards compatibility
         #     - [String] publish_code the full HTML code of the template, with mc:edit attributes marking the editable elements that are available as published, if it has been published
+        #     - [String] publish_subject the subject line of the template, if provided
+        #     - [String] publish_from_email the default sender address for the template, if provided
+        #     - [String] publish_from_name the default sender from name for the template, if provided
+        #     - [String] publish_text the default text part of messages sent with the template, if provided
         #     - [String] published_at the date and time the template was last published as a UTC string in YYYY-MM-DD HH:MM:SS format, or null if it has not been published
         #     - [String] created_at the date and time the template was first created as a UTC string in YYYY-MM-DD HH:MM:SS format
         #     - [String] updated_at the date and time the template was last modified as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -98,8 +146,16 @@ module Mandrill
         #         - [String] slug the immutable unique code name of the template
         #         - [String] name the name of the template
         #         - [String] code the full HTML code of the template, with mc:edit attributes marking the editable elements - draft version
+        #         - [String] subject the subject line of the template, if provided - draft version
+        #         - [String] from_email the default sender address for the template, if provided - draft version
+        #         - [String] from_name the default sender from name for the template, if provided - draft version
+        #         - [String] text the default text part of messages sent with the template, if provided - draft version
         #         - [String] publish_name the same as the template name - kept as a separate field for backwards compatibility
         #         - [String] publish_code the full HTML code of the template, with mc:edit attributes marking the editable elements that are available as published, if it has been published
+        #         - [String] publish_subject the subject line of the template, if provided
+        #         - [String] publish_from_email the default sender address for the template, if provided
+        #         - [String] publish_from_name the default sender from name for the template, if provided
+        #         - [String] publish_text the default text part of messages sent with the template, if provided
         #         - [String] published_at the date and time the template was last published as a UTC string in YYYY-MM-DD HH:MM:SS format, or null if it has not been published
         #         - [String] created_at the date and time the template was first created as a UTC string in YYYY-MM-DD HH:MM:SS format
         #         - [String] updated_at the date and time the template was last modified as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -582,6 +638,7 @@ module Mandrill
         #         - [String] name the name of the mc:edit editable region to inject into
         #         - [String] content the content to inject
         # @param [Hash] message the other information on the message to send - same as /messages/send, but without the html content
+        #     - [String] html optional full HTML content to be sent if not in template
         #     - [String] text optional full text content to be sent
         #     - [String] subject the message subject
         #     - [String] from_email the sender email address.
