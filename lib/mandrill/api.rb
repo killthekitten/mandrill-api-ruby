@@ -275,7 +275,17 @@ module Mandrill
         #         - [String] created_at when the email was added to the blacklist
         #         - [String] expires_at when the blacklist entry will expire (this may be in the past)
         #         - [Boolean] expired whether the blacklist entry has expired
-        #         - [Hash] Sender sender the sender that this blacklist entry applies to, or null if none.
+        #         - [Hash] sender the sender that this blacklist entry applies to, or null if none.
+        #             - [String] address the sender's email address
+        #             - [String] created_at the date and time that the sender was first seen by Mandrill as a UTC date string in YYYY-MM-DD HH:MM:SS format
+        #             - [Integer] sent the total number of messages sent by this sender
+        #             - [Integer] hard_bounces the total number of hard bounces by messages by this sender
+        #             - [Integer] soft_bounces the total number of soft bounces by messages by this sender
+        #             - [Integer] rejects the total number of rejected messages by this sender
+        #             - [Integer] complaints the total number of spam complaints received for messages by this sender
+        #             - [Integer] unsubs the total number of unsubscribe requests received for messages by this sender
+        #             - [Integer] opens the total number of times messages by this sender have been opened
+        #             - [Integer] clicks the total number of times tracked URLs in messages by this sender have been clicked
         def list(email=nil, include_expired=false)
             _params = {:email => email, :include_expired => include_expired}
             return @master.call 'rejects/list', _params
@@ -321,16 +331,20 @@ module Mandrill
             return @master.call 'inbound/routes', _params
         end
 
-        # Take a raw MIME document destined for a domain with inbound domains set up, and send it to the inbound hook exactly as if it had been sent over SMTP $sparam string $to[] the email address of the recipient @validate trim $sparam string $mail_from the address specified in the MAIL FROM stage of the SMTP conversation @validate email. Optional; required for the SPF check. $sparam string $helo the identification provided by the client mta in the MTA state of the SMTP conversation. Optional; required for the SPF check. $sparam string $client_address the remote MTA's ip address. Optional; required for the SPF check.
+        # Take a raw MIME document destined for a domain with inbound domains set up, and send it to the inbound hook exactly as if it had been sent over SMTP
         # @param [String] raw_message the full MIME document of an email message
         # @param [Array, nil] to optionally define the recipients to receive the message - otherwise we'll use the To, Cc, and Bcc headers provided in the document
+        #     - [String] to[] the email address of the recipient
+        # @param [String] mail_from the address specified in the MAIL FROM stage of the SMTP conversation. Required for the SPF check.
+        # @param [String] helo the identification provided by the client mta in the MTA state of the SMTP conversation. Required for the SPF check.
+        # @param [String] client_address the remote MTA's ip address. Optional; required for the SPF check.
         # @return [Array] an array of the information for each recipient in the message (usually one) that matched an inbound route
         #     - [Hash] return[] the individual recipient information
         #         - [String] email the email address of the matching recipient
         #         - [String] pattern the mailbox route pattern that the recipient matched
         #         - [String] url the webhook URL that the message was posted to
-        def send_raw(raw_message, to=nil)
-            _params = {:raw_message => raw_message, :to => to}
+        def send_raw(raw_message, to=nil, mail_from=nil, helo=nil, client_address=nil)
+            _params = {:raw_message => raw_message, :to => to, :mail_from => mail_from, :helo => helo, :client_address => client_address}
             return @master.call 'inbound/send-raw', _params
         end
 
@@ -508,6 +522,7 @@ module Mandrill
         #             - [String] email the email address of the recipient
         #             - [String] name the optional display name to use for the recipient
         #     - [Hash] headers optional extra headers to add to the message (currently only Reply-To and X-* headers are allowed)
+        #     - [Boolean] important whether or not this message is important, and should be delivered ahead of non-important messages
         #     - [Boolean] track_opens whether or not to turn on open tracking for the message
         #     - [Boolean] track_clicks whether or not to turn on click tracking for the message
         #     - [Boolean] auto_text whether or not to automatically generate a text part for messages that are not given text
@@ -576,6 +591,7 @@ module Mandrill
         #             - [String] email the email address of the recipient
         #             - [String] name the optional display name to use for the recipient
         #     - [Hash] headers optional extra headers to add to the message (currently only Reply-To and X-* headers are allowed)
+        #     - [Boolean] important whether or not this message is important, and should be delivered ahead of non-important messages
         #     - [Boolean] track_opens whether or not to turn on open tracking for the message
         #     - [Boolean] track_clicks whether or not to turn on click tracking for the message
         #     - [Boolean] auto_text whether or not to automatically generate a text part for messages that are not given text
@@ -586,6 +602,7 @@ module Mandrill
         #     - [String] bcc_address an optional address to receive an exact copy of each recipient's email
         #     - [String] tracking_domain a custom domain to use for tracking opens and clicks instead of mandrillapp.com
         #     - [String] signing_domain a custom domain to use for SPF/DKIM signing instead of mandrill (for "via" or "on behalf of" in email clients)
+        #     - [Boolean] merge whether to evaluate merge tags in the message. Will automatically be set to true if either merge_vars or global_merge_vars are provided.
         #     - [Array] global_merge_vars global merge variables to use for all recipients. You can override these per recipient.
         #         - [Hash] global_merge_vars[] a single global merge variable
         #             - [String] name the global merge variable's name. Merge variable names are case-insensitive and may not start with _
@@ -616,7 +633,7 @@ module Mandrill
         #             - [String] type the MIME type of the image - must start with "image/"
         #             - [String] name the Content ID of the image - use <img src="cid:THIS_VALUE"> to reference the image in your HTML content
         #             - [String] content the content of the image as a base64-encoded string
-        # @param [Boolean] async enable a background sending mode that is optimized for bulk sending. In async mode, messages/sendTemplate will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a webhook for the 'reject' event. Defaults to false for messages with no more than 10 recipients; messages with more than 10 recipients are always sent asynchronously, regardless of the value of async.
+        # @param [Boolean] async enable a background sending mode that is optimized for bulk sending. In async mode, messages/send will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a webhook for the 'reject' event. Defaults to false for messages with no more than 10 recipients; messages with more than 10 recipients are always sent asynchronously, regardless of the value of async.
         # @return [Array] of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
         #     - [Hash] return[] the sending results for a single recipient
         #         - [String] email the email address of the recipient
