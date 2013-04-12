@@ -782,6 +782,7 @@ module Mandrill
         #     - [Hash] return[] the inidividual webhook info
         #         - [Integer] id a unique integer indentifier for the webhook
         #         - [String] url The URL that the event data will be posted to
+        #         - [String] description a description of the webhook
         #         - [Array] events The message events that will be posted to the hook
         #             - [String] events[] the individual message event (send, hard_bounce, soft_bounce, open, click, spam, unsub, or reject)
         #         - [String] created_at the date and time that the webhook was created as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -796,11 +797,13 @@ module Mandrill
 
         # Add a new webhook
         # @param [String] url the URL to POST batches of events
+        # @param [String] description an optional description of the webhook
         # @param [Array] events an optional list of events that will be posted to the webhook
         #     - [String] events[] the individual event to listen for
         # @return [Hash] the information saved about the new webhook
         #     - [Integer] id a unique integer indentifier for the webhook
         #     - [String] url The URL that the event data will be posted to
+        #     - [String] description a description of the webhook
         #     - [Array] events The message events that will be posted to the hook
         #         - [String] events[] the individual message event (send, hard_bounce, soft_bounce, open, click, spam, unsub, or reject)
         #     - [String] created_at the date and time that the webhook was created as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -808,8 +811,8 @@ module Mandrill
         #     - [Integer] batches_sent the number of event batches that have ever been sent to this webhook
         #     - [Integer] events_sent the total number of events that have ever been sent to this webhook
         #     - [String] last_error if we've ever gotten an error trying to post to this webhook, the last error that we've seen
-        def add(url, events=[])
-            _params = {:url => url, :events => events}
+        def add(url, description=nil, events=[])
+            _params = {:url => url, :description => description, :events => events}
             return @master.call 'webhooks/add', _params
         end
 
@@ -818,6 +821,7 @@ module Mandrill
         # @return [Hash] the information about the webhook
         #     - [Integer] id a unique integer indentifier for the webhook
         #     - [String] url The URL that the event data will be posted to
+        #     - [String] description a description of the webhook
         #     - [Array] events The message events that will be posted to the hook
         #         - [String] events[] the individual message event (send, hard_bounce, soft_bounce, open, click, spam, unsub, or reject)
         #     - [String] created_at the date and time that the webhook was created as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -833,11 +837,13 @@ module Mandrill
         # Update an existing webhook
         # @param [Integer] id the unique identifier of a webhook belonging to this account
         # @param [String] url the URL to POST batches of events
+        # @param [String] description an optional description of the webhook
         # @param [Array] events an optional list of events that will be posted to the webhook
         #     - [String] events[] the individual event to listen for
         # @return [Hash] the information for the updated webhook
         #     - [Integer] id a unique integer indentifier for the webhook
         #     - [String] url The URL that the event data will be posted to
+        #     - [String] description a description of the webhook
         #     - [Array] events The message events that will be posted to the hook
         #         - [String] events[] the individual message event (send, hard_bounce, soft_bounce, open, click, spam, unsub, or reject)
         #     - [String] created_at the date and time that the webhook was created as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -845,8 +851,8 @@ module Mandrill
         #     - [Integer] batches_sent the number of event batches that have ever been sent to this webhook
         #     - [Integer] events_sent the total number of events that have ever been sent to this webhook
         #     - [String] last_error if we've ever gotten an error trying to post to this webhook, the last error that we've seen
-        def update(id, url, events=[])
-            _params = {:id => id, :url => url, :events => events}
+        def update(id, url, description=nil, events=[])
+            _params = {:id => id, :url => url, :description => description, :events => events}
             return @master.call 'webhooks/update', _params
         end
 
@@ -855,6 +861,7 @@ module Mandrill
         # @return [Hash] the information for the deleted webhook
         #     - [Integer] id a unique integer indentifier for the webhook
         #     - [String] url The URL that the event data will be posted to
+        #     - [String] description a description of the webhook
         #     - [Array] events The message events that will be posted to the hook
         #         - [String] events[] the individual message event (send, hard_bounce, soft_bounce, open, click, spam, unsub, or reject)
         #     - [String] created_at the date and time that the webhook was created as a UTC string in YYYY-MM-DD HH:MM:SS format

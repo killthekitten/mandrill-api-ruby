@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
     s.name = 'mandrill-api'
-    s.version = '1.0.21'
+    s.version = '1.0.22'
     s.summary = 'A Ruby API library for the Mandrill email as a service platform.'
     s.description = s.summary
     s.authors = ['Mandrill Devs']
