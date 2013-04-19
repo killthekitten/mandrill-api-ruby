@@ -328,7 +328,9 @@ module Mandrill
         #     - [Hash] return[] the information for each rejection blacklist entry
         #         - [String] email the email that is blocked
         #         - [String] reason the type of event (hard-bounce, soft-bounce, spam, unsub) that caused this rejection
+        #         - [String] detail extended details about the event, such as the SMTP diagnostic for bounces or the comment for manually-created rejections
         #         - [String] created_at when the email was added to the blacklist
+        #         - [String] last_event_at the timestamp of the most recent event that either created or renewed this rejection
         #         - [String] expires_at when the blacklist entry will expire (this may be in the past)
         #         - [Boolean] expired whether the blacklist entry has expired
         #         - [Hash] sender the sender that this blacklist entry applies to, or null if none.
