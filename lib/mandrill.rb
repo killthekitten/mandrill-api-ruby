@@ -97,6 +97,9 @@ module Mandrill
         def messages()
             Messages.new self
         end
+        def whitelists()
+            Whitelists.new self
+        end
         def internal()
             Internal.new self
         end

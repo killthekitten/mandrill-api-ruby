@@ -321,6 +321,16 @@ module Mandrill
             @master = master
         end
 
+        # Adds an email to your email rejection blacklist. Addresses that you add manually will never expire and there is no reputation penalty for removing them from your blacklist. Attempting to blacklist an address that has been whitelisted will have no effect.
+        # @param [String] email an email address to block
+        # @return [Hash] a status object containing the address and the result of the operation
+        #     - [String] email the email address you provided
+        #     - [Boolean] added whether the operation succeeded
+        def add(email)
+            _params = {:email => email}
+            return @master.call 'rejects/add', _params
+        end
+
         # Retrieves your email rejection blacklist. You can provide an email address to limit the results. Returns up to 1000 results. By default, entries that have expired are excluded from the results; set include_expired to true to include them.
         # @param [String] email an optional email address to search by
         # @param [Boolean] include_expired whether to include rejections that have already expired.
@@ -772,6 +782,46 @@ module Mandrill
         def send_raw(raw_message, from_email=nil, from_name=nil, to=nil, async=false)
             _params = {:raw_message => raw_message, :from_email => from_email, :from_name => from_name, :to => to, :async => async}
             return @master.call 'messages/send-raw', _params
+        end
+
+    end
+    class Whitelists
+        attr_accessor :master
+
+        def initialize(master)
+            @master = master
+        end
+
+        # Adds an email to your email rejection whitelist. If the address is currently on your blacklist, that blacklist entry will be removed automatically.
+        # @param [String] email an email address to add to the whitelist
+        # @return [Hash] a status object containing the address and the result of the operation
+        #     - [String] email the email address you provided
+        #     - [Boolean] whether the operation succeeded
+        def add(email)
+            _params = {:email => email}
+            return @master.call 'whitelists/add', _params
+        end
+
+        # Retrieves your email rejection whitelist. You can provide an email address or search prefix to limit the results. Returns up to 1000 results.
+        # @param [String] email an optional email address or prefix to search by
+        # @return [Array] up to 1000 whitelist entries
+        #     - [Hash] return[] the information for each whitelist entry
+        #         - [String] email the email that is whitelisted
+        #         - [String] detail a description of why the email was whitelisted
+        #         - [String] created_at when the email was added to the whitelist
+        def list(email=nil)
+            _params = {:email => email}
+            return @master.call 'whitelists/list', _params
+        end
+
+        # Removes an email address from the whitelist.
+        # @param [String] email the email address to remove from the whitelist
+        # @return [Hash] a status object containing the address and whether the deletion succeeded
+        #     - [String] email the email address that was removed from the blacklist
+        #     - [Boolean] deleted whether the address was deleted successfully
+        def delete(email)
+            _params = {:email => email}
+            return @master.call 'whitelists/delete', _params
         end
 
     end
