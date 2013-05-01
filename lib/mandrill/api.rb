@@ -62,7 +62,7 @@ module Mandrill
             return @master.call 'templates/info', _params
         end
 
-        # Update the code for an existing template
+        # Update the code for an existing template. If null is provided for any fields, the values will remain unchanged.
         # @param [String] name the immutable name of an existing template
         # @param [String] from_email the new default sending address
         # @param [String] from_name the new default from name
