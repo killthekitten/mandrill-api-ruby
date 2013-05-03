@@ -892,6 +892,7 @@ module Mandrill
         #         - [Integer] id a unique integer indentifier for the webhook
         #         - [String] url The URL that the event data will be posted to
         #         - [String] description a description of the webhook
+        #         - [String] auth_key the key used to requests for this webhook
         #         - [Array] events The message events that will be posted to the hook
         #             - [String] events[] the individual message event (send, hard_bounce, soft_bounce, open, click, spam, unsub, or reject)
         #         - [String] created_at the date and time that the webhook was created as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -913,6 +914,7 @@ module Mandrill
         #     - [Integer] id a unique integer indentifier for the webhook
         #     - [String] url The URL that the event data will be posted to
         #     - [String] description a description of the webhook
+        #     - [String] auth_key the key used to requests for this webhook
         #     - [Array] events The message events that will be posted to the hook
         #         - [String] events[] the individual message event (send, hard_bounce, soft_bounce, open, click, spam, unsub, or reject)
         #     - [String] created_at the date and time that the webhook was created as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -931,6 +933,7 @@ module Mandrill
         #     - [Integer] id a unique integer indentifier for the webhook
         #     - [String] url The URL that the event data will be posted to
         #     - [String] description a description of the webhook
+        #     - [String] auth_key the key used to requests for this webhook
         #     - [Array] events The message events that will be posted to the hook
         #         - [String] events[] the individual message event (send, hard_bounce, soft_bounce, open, click, spam, unsub, or reject)
         #     - [String] created_at the date and time that the webhook was created as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -953,6 +956,7 @@ module Mandrill
         #     - [Integer] id a unique integer indentifier for the webhook
         #     - [String] url The URL that the event data will be posted to
         #     - [String] description a description of the webhook
+        #     - [String] auth_key the key used to requests for this webhook
         #     - [Array] events The message events that will be posted to the hook
         #         - [String] events[] the individual message event (send, hard_bounce, soft_bounce, open, click, spam, unsub, or reject)
         #     - [String] created_at the date and time that the webhook was created as a UTC string in YYYY-MM-DD HH:MM:SS format
@@ -971,6 +975,7 @@ module Mandrill
         #     - [Integer] id a unique integer indentifier for the webhook
         #     - [String] url The URL that the event data will be posted to
         #     - [String] description a description of the webhook
+        #     - [String] auth_key the key used to requests for this webhook
         #     - [Array] events The message events that will be posted to the hook
         #         - [String] events[] the individual message event (send, hard_bounce, soft_bounce, open, click, spam, unsub, or reject)
         #     - [String] created_at the date and time that the webhook was created as a UTC string in YYYY-MM-DD HH:MM:SS format
