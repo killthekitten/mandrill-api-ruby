@@ -61,7 +61,8 @@ module Mandrill
                 'Unknown_Url' => UnknownUrlError,
                 'Invalid_Template' => InvalidTemplateError,
                 'Unknown_Webhook' => UnknownWebhookError,
-                'Unknown_InboundDomain' => UnknownInboundDomainError
+                'Unknown_InboundDomain' => UnknownInboundDomainError,
+                'Unknown_Export' => UnknownExportError
             }
 
             begin
@@ -81,6 +82,9 @@ module Mandrill
 
         def templates()
             Templates.new self
+        end
+        def exports()
+            Exports.new self
         end
         def users()
             Users.new self

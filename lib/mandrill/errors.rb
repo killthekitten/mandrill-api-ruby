@@ -21,5 +21,7 @@ module Mandrill
     end
     class UnknownInboundDomainError < Error
     end
+    class UnknownExportError < Error
+    end
 end
 
