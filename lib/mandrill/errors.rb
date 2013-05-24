@@ -7,6 +7,8 @@ module Mandrill
     end
     class UnknownTemplateError < Error
     end
+    class ServiceUnavailableError < Error
+    end
     class InvalidTagNameError < Error
     end
     class InvalidRejectError < Error

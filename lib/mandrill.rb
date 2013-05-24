@@ -55,6 +55,7 @@ module Mandrill
                 'ValidationError' => ValidationError,
                 'Invalid_Key' => InvalidKeyError,
                 'Unknown_Template' => UnknownTemplateError,
+                'ServiceUnavailable' => ServiceUnavailableError,
                 'Invalid_Tag_Name' => InvalidTagNameError,
                 'Invalid_Reject' => InvalidRejectError,
                 'Unknown_Sender' => UnknownSenderError,
