@@ -719,14 +719,15 @@ module Mandrill
         #             - [String] name the Content ID of the image - use <img src="cid:THIS_VALUE"> to reference the image in your HTML content
         #             - [String] content the content of the image as a base64-encoded string
         # @param [Boolean] async enable a background sending mode that is optimized for bulk sending. In async mode, messages/send will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a webhook for the 'reject' event. Defaults to false for messages with no more than 10 recipients; messages with more than 10 recipients are always sent asynchronously, regardless of the value of async.
+        # @param [String] ip_pool the name of the dedicated ip pool that should be used to send the message. If you do not have any dedicated IPs, this parameter has no effect. If you specify a pool that does not exist, your default pool will be used instead.
         # @return [Array] of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
         #     - [Hash] return[] the sending results for a single recipient
         #         - [String] email the email address of the recipient
         #         - [String] status the sending status of the recipient - either "sent", "queued", "rejected", or "invalid"
         #         - [String] reject_reason the reason for the rejection if the recipient status is "rejected"
         #         - [String] _id the message's unique id
-        def send(message, async=false)
-            _params = {:message => message, :async => async}
+        def send(message, async=false, ip_pool=nil)
+            _params = {:message => message, :async => async, :ip_pool => ip_pool}
             return @master.call 'messages/send', _params
         end
 
@@ -790,14 +791,15 @@ module Mandrill
         #             - [String] name the Content ID of the image - use <img src="cid:THIS_VALUE"> to reference the image in your HTML content
         #             - [String] content the content of the image as a base64-encoded string
         # @param [Boolean] async enable a background sending mode that is optimized for bulk sending. In async mode, messages/send will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a webhook for the 'reject' event. Defaults to false for messages with no more than 10 recipients; messages with more than 10 recipients are always sent asynchronously, regardless of the value of async.
+        # @param [String] ip_pool the name of the dedicated ip pool that should be used to send the message. If you do not have any dedicated IPs, this parameter has no effect. If you specify a pool that does not exist, your default pool will be used instead.
         # @return [Array] of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
         #     - [Hash] return[] the sending results for a single recipient
         #         - [String] email the email address of the recipient
         #         - [String] status the sending status of the recipient - either "sent", "queued", "rejected", or "invalid"
         #         - [String] reject_reason the reason for the rejection if the recipient status is "rejected"
         #         - [String] _id the message's unique id
-        def send_template(template_name, template_content, message, async=false)
-            _params = {:template_name => template_name, :template_content => template_content, :message => message, :async => async}
+        def send_template(template_name, template_content, message, async=false, ip_pool=nil)
+            _params = {:template_name => template_name, :template_content => template_content, :message => message, :async => async, :ip_pool => ip_pool}
             return @master.call 'messages/send-template', _params
         end
 
@@ -862,14 +864,15 @@ module Mandrill
         # @param [Array, nil] to optionally define the recipients to receive the message - otherwise we'll use the To, Cc, and Bcc headers provided in the document
         #     - [String] to[] the email address of the recipint
         # @param [Boolean] async enable a background sending mode that is optimized for bulk sending. In async mode, messages/sendRaw will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a webhook for the 'reject' event. Defaults to false for messages with no more than 10 recipients; messages with more than 10 recipients are always sent asynchronously, regardless of the value of async.
+        # @param [String] ip_pool the name of the dedicated ip pool that should be used to send the message. If you do not have any dedicated IPs, this parameter has no effect. If you specify a pool that does not exist, your default pool will be used instead.
         # @return [Array] of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
         #     - [Hash] return[] the sending results for a single recipient
         #         - [String] email the email address of the recipient
         #         - [String] status the sending status of the recipient - either "sent", "queued", "rejected", or "invalid"
         #         - [String] reject_reason the reason for the rejection if the recipient status is "rejected"
         #         - [String] _id the message's unique id
-        def send_raw(raw_message, from_email=nil, from_name=nil, to=nil, async=false)
-            _params = {:raw_message => raw_message, :from_email => from_email, :from_name => from_name, :to => to, :async => async}
+        def send_raw(raw_message, from_email=nil, from_name=nil, to=nil, async=false, ip_pool=nil)
+            _params = {:raw_message => raw_message, :from_email => from_email, :from_name => from_name, :to => to, :async => async, :ip_pool => ip_pool}
             return @master.call 'messages/send-raw', _params
         end
 
