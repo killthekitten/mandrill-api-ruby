@@ -5,9 +5,13 @@ module Mandrill
     end
     class InvalidKeyError < Error
     end
+    class PaymentRequiredError < Error
+    end
     class UnknownTemplateError < Error
     end
     class ServiceUnavailableError < Error
+    end
+    class UnknownMessageError < Error
     end
     class InvalidTagNameError < Error
     end

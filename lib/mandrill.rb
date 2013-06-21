@@ -54,8 +54,10 @@ module Mandrill
             error_map = {
                 'ValidationError' => ValidationError,
                 'Invalid_Key' => InvalidKeyError,
+                'PaymentRequired' => PaymentRequiredError,
                 'Unknown_Template' => UnknownTemplateError,
                 'ServiceUnavailable' => ServiceUnavailableError,
+                'Unknown_Message' => UnknownMessageError,
                 'Invalid_Tag_Name' => InvalidTagNameError,
                 'Invalid_Reject' => InvalidRejectError,
                 'Unknown_Sender' => UnknownSenderError,

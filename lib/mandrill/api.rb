@@ -394,6 +394,8 @@ module Mandrill
         #         - [Integer] unsubs the total number of unsubscribe requests received for messages by this sender
         #         - [Integer] opens the total number of times messages by this sender have been opened
         #         - [Integer] clicks the total number of times tracked URLs in messages by this sender have been clicked
+        #         - [Integer] unique_opens the number of unique opens for emails sent for this sender
+        #         - [Integer] unique_clicks the number of unique clicks for emails sent for this sender
         def senders()
             _params = {}
             return @master.call 'users/senders', _params
@@ -440,6 +442,8 @@ module Mandrill
         #             - [Integer] unsubs the total number of unsubscribe requests received for messages by this sender
         #             - [Integer] opens the total number of times messages by this sender have been opened
         #             - [Integer] clicks the total number of times tracked URLs in messages by this sender have been clicked
+        #             - [Integer] unique_opens the number of unique opens for emails sent for this sender
+        #             - [Integer] unique_clicks the number of unique clicks for emails sent for this sender
         def list(email=nil, include_expired=false)
             _params = {:email => email, :include_expired => include_expired}
             return @master.call 'rejects/list', _params
@@ -522,6 +526,8 @@ module Mandrill
         #         - [Integer] unsubs the total number of unsubscribe requests received for messages with this tag
         #         - [Integer] opens the total number of times messages with this tag have been opened
         #         - [Integer] clicks the total number of times tracked URLs in messages with this tag have been clicked
+        #         - [Integer] unique_opens the number of unique opens for emails sent with this tag
+        #         - [Integer] unique_clicks the number of unique clicks for emails sent with this tag
         def list()
             _params = {}
             return @master.call 'tags/list', _params
@@ -539,6 +545,8 @@ module Mandrill
         #     - [Integer] unsubs the total number of unsubscribe requests received for messages with this tag
         #     - [Integer] opens the total number of times messages with this tag have been opened
         #     - [Integer] clicks the total number of times tracked URLs in messages with this tag have been clicked
+        #     - [Integer] unique_opens the number of unique opens for emails sent with this tag
+        #     - [Integer] unique_clicks the number of unique clicks for emails sent with this tag
         def delete(tag)
             _params = {:tag => tag}
             return @master.call 'tags/delete', _params
@@ -720,14 +728,15 @@ module Mandrill
         #             - [String] content the content of the image as a base64-encoded string
         # @param [Boolean] async enable a background sending mode that is optimized for bulk sending. In async mode, messages/send will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a webhook for the 'reject' event. Defaults to false for messages with no more than 10 recipients; messages with more than 10 recipients are always sent asynchronously, regardless of the value of async.
         # @param [String] ip_pool the name of the dedicated ip pool that should be used to send the message. If you do not have any dedicated IPs, this parameter has no effect. If you specify a pool that does not exist, your default pool will be used instead.
+        # @param [String] send_at when this message should be sent as a UTC timestamp in YYYY-MM-DD HH:MM:SS format. If you specify a time in the past, the message will be sent immediately.
         # @return [Array] of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
         #     - [Hash] return[] the sending results for a single recipient
         #         - [String] email the email address of the recipient
-        #         - [String] status the sending status of the recipient - either "sent", "queued", "rejected", or "invalid"
+        #         - [String] status the sending status of the recipient - either "sent", "queued", "scheduled", "rejected", or "invalid"
         #         - [String] reject_reason the reason for the rejection if the recipient status is "rejected"
         #         - [String] _id the message's unique id
-        def send(message, async=false, ip_pool=nil)
-            _params = {:message => message, :async => async, :ip_pool => ip_pool}
+        def send(message, async=false, ip_pool=nil, send_at=nil)
+            _params = {:message => message, :async => async, :ip_pool => ip_pool, :send_at => send_at}
             return @master.call 'messages/send', _params
         end
 
@@ -792,14 +801,15 @@ module Mandrill
         #             - [String] content the content of the image as a base64-encoded string
         # @param [Boolean] async enable a background sending mode that is optimized for bulk sending. In async mode, messages/send will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a webhook for the 'reject' event. Defaults to false for messages with no more than 10 recipients; messages with more than 10 recipients are always sent asynchronously, regardless of the value of async.
         # @param [String] ip_pool the name of the dedicated ip pool that should be used to send the message. If you do not have any dedicated IPs, this parameter has no effect. If you specify a pool that does not exist, your default pool will be used instead.
-        # @return [Array] of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
+        # @param [String] send_at when this message should be sent as a UTC timestamp in YYYY-MM-DD HH:MM:SS format. If you specify a time in the past, the message will be sent immediately.
+        # @return [Array] of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", "scheduled", or "rejected"
         #     - [Hash] return[] the sending results for a single recipient
         #         - [String] email the email address of the recipient
         #         - [String] status the sending status of the recipient - either "sent", "queued", "rejected", or "invalid"
         #         - [String] reject_reason the reason for the rejection if the recipient status is "rejected"
         #         - [String] _id the message's unique id
-        def send_template(template_name, template_content, message, async=false, ip_pool=nil)
-            _params = {:template_name => template_name, :template_content => template_content, :message => message, :async => async, :ip_pool => ip_pool}
+        def send_template(template_name, template_content, message, async=false, ip_pool=nil, send_at=nil)
+            _params = {:template_name => template_name, :template_content => template_content, :message => message, :async => async, :ip_pool => ip_pool, :send_at => send_at}
             return @master.call 'messages/send-template', _params
         end
 
@@ -865,15 +875,60 @@ module Mandrill
         #     - [String] to[] the email address of the recipint
         # @param [Boolean] async enable a background sending mode that is optimized for bulk sending. In async mode, messages/sendRaw will immediately return a status of "queued" for every recipient. To handle rejections when sending in async mode, set up a webhook for the 'reject' event. Defaults to false for messages with no more than 10 recipients; messages with more than 10 recipients are always sent asynchronously, regardless of the value of async.
         # @param [String] ip_pool the name of the dedicated ip pool that should be used to send the message. If you do not have any dedicated IPs, this parameter has no effect. If you specify a pool that does not exist, your default pool will be used instead.
+        # @param [String] send_at when this message should be sent as a UTC timestamp in YYYY-MM-DD HH:MM:SS format. If you specify a time in the past, the message will be sent immediately.
         # @return [Array] of structs for each recipient containing the key "email" with the email address and "status" as either "sent", "queued", or "rejected"
         #     - [Hash] return[] the sending results for a single recipient
         #         - [String] email the email address of the recipient
-        #         - [String] status the sending status of the recipient - either "sent", "queued", "rejected", or "invalid"
+        #         - [String] status the sending status of the recipient - either "sent", "queued", "scheduled", "rejected", or "invalid"
         #         - [String] reject_reason the reason for the rejection if the recipient status is "rejected"
         #         - [String] _id the message's unique id
-        def send_raw(raw_message, from_email=nil, from_name=nil, to=nil, async=false, ip_pool=nil)
-            _params = {:raw_message => raw_message, :from_email => from_email, :from_name => from_name, :to => to, :async => async, :ip_pool => ip_pool}
+        def send_raw(raw_message, from_email=nil, from_name=nil, to=nil, async=false, ip_pool=nil, send_at=nil)
+            _params = {:raw_message => raw_message, :from_email => from_email, :from_name => from_name, :to => to, :async => async, :ip_pool => ip_pool, :send_at => send_at}
             return @master.call 'messages/send-raw', _params
+        end
+
+        # Queries your scheduled emails by sender or recipient, or both.
+        # @param [String] to an optional recipient address to restrict results to
+        # @return [Array] a list of up to 1000 scheduled emails
+        #     - [Hash] return[] a scheduled email
+        #         - [String] _id the scheduled message id
+        #         - [String] created_at the UTC timestamp when the message was created, in YYYY-MM-DD HH:MM:SS format
+        #         - [String] send_at the UTC timestamp when the message will be sent, in YYYY-MM-DD HH:MM:SS format
+        #         - [String] from_email the email's sender address
+        #         - [String] to the email's recipient
+        #         - [String] subject the email's subject
+        def list_scheduled(to=nil)
+            _params = {:to => to}
+            return @master.call 'messages/list-scheduled', _params
+        end
+
+        # Cancels a scheduled email.
+        # @param [String] id a scheduled email id, as returned by any of the messages/send calls or messages/list-scheduled
+        # @return [Hash] information about the scheduled email that was cancelled.
+        #     - [String] _id the scheduled message id
+        #     - [String] created_at the UTC timestamp when the message was created, in YYYY-MM-DD HH:MM:SS format
+        #     - [String] send_at the UTC timestamp when the message will be sent, in YYYY-MM-DD HH:MM:SS format
+        #     - [String] from_email the email's sender address
+        #     - [String] to the email's recipient
+        #     - [String] subject the email's subject
+        def cancel_scheduled(id)
+            _params = {:id => id}
+            return @master.call 'messages/cancel-scheduled', _params
+        end
+
+        # Reschedules a scheduled email.
+        # @param [String] id a scheduled email id, as returned by any of the messages/send calls or messages/list-scheduled
+        # @param [String] send_at the new UTC timestamp when the message should sent. Mandrill can't time travel, so if you specify a time in past the message will be sent immediately
+        # @return [Hash] information about the scheduled email that was rescheduled.
+        #     - [String] _id the scheduled message id
+        #     - [String] created_at the UTC timestamp when the message was created, in YYYY-MM-DD HH:MM:SS format
+        #     - [String] send_at the UTC timestamp when the message will be sent, in YYYY-MM-DD HH:MM:SS format
+        #     - [String] from_email the email's sender address
+        #     - [String] to the email's recipient
+        #     - [String] subject the email's subject
+        def reschedule(id, send_at)
+            _params = {:id => id, :send_at => send_at}
+            return @master.call 'messages/reschedule', _params
         end
 
     end
@@ -1101,6 +1156,8 @@ module Mandrill
         #         - [Integer] unsubs the total number of unsubscribe requests received for messages by this sender
         #         - [Integer] opens the total number of times messages by this sender have been opened
         #         - [Integer] clicks the total number of times tracked URLs in messages by this sender have been clicked
+        #         - [Integer] unique_opens the number of unique opens for emails sent for this sender
+        #         - [Integer] unique_clicks the number of unique clicks for emails sent for this sender
         def list()
             _params = {}
             return @master.call 'senders/list', _params
