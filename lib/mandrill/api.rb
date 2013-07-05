@@ -830,7 +830,20 @@ module Mandrill
         #         - [Array] tags list of tags on this message
         #             - [String] tags[] individual tag on this message
         #         - [Integer] opens how many times has this message been opened
+        #         - [Array] opens_detail list of individual opens for the message
+        #             - [Hash] opens_detail[] information on an individual open
+        #                 - [Integer] ts the unix timestamp from when the message was opened
+        #                 - [String] ip the IP address that generated the open
+        #                 - [String] location the approximate region and country that the opening IP is located
+        #                 - [String] ua the email client or browser data of the open
         #         - [Integer] clicks how many times has a link been clicked in this message
+        #         - [Array] clicks_detail list of individual clicks for the message
+        #             - [Hash] clicks_detail[] information on an individual click
+        #                 - [Integer] ts the unix timestamp from when the message was clicked
+        #                 - [String] url the URL that was clicked on
+        #                 - [String] ip the IP address that generated the click
+        #                 - [String] location the approximate region and country that the clicking IP is located
+        #                 - [String] ua the email client or browser data of the click
         #         - [String] state sending status of this message: sent, bounced, rejected
         #         - [Hash] metadata any custom metadata provided when the message was sent
         def search(query='*', date_from=nil, date_to=nil, tags=nil, senders=nil, limit=100)
