@@ -825,6 +825,7 @@ module Mandrill
         #         - [Integer] ts the Unix timestamp from when this message was sent
         #         - [String] _id the message's unique id
         #         - [String] sender the email address of the sender
+        #         - [String] template the unique name of the template used, if any
         #         - [String] subject the message's subject link
         #         - [String] email the recipient email address
         #         - [Array] tags list of tags on this message
@@ -849,6 +850,39 @@ module Mandrill
         def search(query='*', date_from=nil, date_to=nil, tags=nil, senders=nil, limit=100)
             _params = {:query => query, :date_from => date_from, :date_to => date_to, :tags => tags, :senders => senders, :limit => limit}
             return @master.call 'messages/search', _params
+        end
+
+        # Get the information for a single recently sent message
+        # @param [String] id the unique id of the message to get - passed as the "_id" field in webhooks, send calls, or search calls
+        # @return [Hash] the information for the message
+        #     - [Integer] ts the Unix timestamp from when this message was sent
+        #     - [String] _id the message's unique id
+        #     - [String] sender the email address of the sender
+        #     - [String] template the unique name of the template used, if any
+        #     - [String] subject the message's subject link
+        #     - [String] email the recipient email address
+        #     - [Array] tags list of tags on this message
+        #         - [String] tags[] individual tag on this message
+        #     - [Integer] opens how many times has this message been opened
+        #     - [Array] opens_detail list of individual opens for the message
+        #         - [Hash] opens_detail[] information on an individual open
+        #             - [Integer] ts the unix timestamp from when the message was opened
+        #             - [String] ip the IP address that generated the open
+        #             - [String] location the approximate region and country that the opening IP is located
+        #             - [String] ua the email client or browser data of the open
+        #     - [Integer] clicks how many times has a link been clicked in this message
+        #     - [Array] clicks_detail list of individual clicks for the message
+        #         - [Hash] clicks_detail[] information on an individual click
+        #             - [Integer] ts the unix timestamp from when the message was clicked
+        #             - [String] url the URL that was clicked on
+        #             - [String] ip the IP address that generated the click
+        #             - [String] location the approximate region and country that the clicking IP is located
+        #             - [String] ua the email client or browser data of the click
+        #     - [String] state sending status of this message: sent, bounced, rejected
+        #     - [Hash] metadata any custom metadata provided when the message was sent
+        def info(id)
+            _params = {:id => id}
+            return @master.call 'messages/info', _params
         end
 
         # Parse the full MIME document for an email message, returning the content of the message broken into its constituent pieces
